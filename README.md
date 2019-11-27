@@ -1,5 +1,5 @@
 # Analiza podatkov s programom R, 2019/20
-rapapapa
+
 Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
 
 * [![Shiny](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/jaanos/APPR-2019-20/master?urlpath=shiny/APPR-2019-20/projekt.Rmd) Shiny
@@ -10,11 +10,14 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
 Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
 Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
 
+
+Za projekt sem si izbral analizo zdravstvenih podjetji v Sloveniji. Analizo bom pripravil na podlagi podatkov iz Ajpesa in Erar-a. Osredotočil se bom na prihodke, izkaz poslovnega izida in bilanco stanja za leta 2015-2018.  S spletne strani Erar pa bom pridobil podatke za prejemke iz javnih sredstev za leti 2017 in 2018. Podatke bom s spletnih strani izločil s pomočjo scraperja in jih uvozil v excel(iskal bom po davčni številki podjetja), iz Vzajemnine baze podatkov pa sem priodbil podatke o obsegu podjetja, vrsti zdravstvene dejavnosti in številu zaposlenih. 
+
+Pregled podatkov bo temeljil na lokaciji zdravstvenega izvajalca, vrsti izvajane zdravstvene dejavnosti, število zaposlenih, dobičku, prihodkih, razmerju med dobičkom in prejemkih iz javnih sredstev ter deleža prejemkov iz javnih sredstev v prihodkih.
+
+
 ## Program
- 
- 
- test doma 
- cmxfzyxkmsx
+
 Glavni program in poročilo se nahajata v datoteki `projekt.Rmd`.
 Ko ga prevedemo, se izvedejo programi, ki ustrezajo drugi, tretji in četrti fazi projekta:
 
