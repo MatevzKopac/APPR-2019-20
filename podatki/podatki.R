@@ -14,4 +14,4 @@ legenda_regij.m <- melt(legenda_regij)
 
 legenda_dejavnosti <- osnovni_podatki[c("regija", "DEJAVNOST")]
 
-#legendo regij rabim spravit iz matrike v tabelo in legendo dejavnosti moram "zmetat skupi" po številki dejavnosti, da bo izgledala kot tabela regij. dodaj še tabel, vprašaj kam pisati vse to 
+#legendo regij rabim spravit iz matrike v tabelo in legendo dejavnosti moram "zmetat skupi" po številki dejavnosti,, da bo izgledala kot tabela regij. dodaj še tabel, vprašaj kam pisati vse to 
