@@ -26,11 +26,9 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # Izbira teme
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+Za projekt sem si izbral analizo zdravstvenih podjetji v Sloveniji. Analizo bom pripravil na podlagi podatkov iz Ajpesa in Erar-a. Osredotočil se bom na prihodke, izkaz poslovnega izida in bilanco stanja za leta 2015-2018.  S spletne strani Erar pa bom pridobil podatke za prejemke iz javnih sredstev za leti 2017 in 2018. Podatke bom s spletnih strani izločil s pomočjo scraperja in jih uvozil v excel(iskal bom po davčni številki podjetja), iz Vzajemnine baze podatkov pa sem priodbil podatke o obsegu podjetja, vrsti zdravstvene dejavnosti in številu zaposlenih. 
 
-![](slike/grb.png)
-
-***
+Pregled podatkov bo temeljil na lokaciji zdravstvenega izvajalca, vrsti izvajane zdravstvene dejavnosti, število zaposlenih, dobičku, prihodkih, razmerju med dobičkom in prejemkih iz javnih sredstev ter deleža prejemkov iz javnih sredstev v prihodkih.
 
 # Obdelava, uvoz in čiščenje podatkov
 
@@ -38,35 +36,39 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem pridobil iz excelovega dokmenta. V njem je veliko podatkov, katerih v analizi nisem uporabil, iz Ajpesa in portala Erar pa sem pridobil še nekaj številskih podatkov s pomočjo scraperja napisanega v pythonu. Tabelo sem po uvozu očistil vseh za analizo ne potrebnih podatkov in jih ločil n dve razpredelnici v obliki "tidy data". Poleg dveh večjih rapredelnic sem naredil še dve manjši, ki služita zgolj kot legenda k podatkom.
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+1. "osnovni_podatki"
+`opisni podatki za zdravstvena podajetja
+  - `NAZIV` - ime zdravstvenega podjetja,
+  - `regija` - k regiji pripisano število, katero lahko odčitamo iz 'legenda_regij',
+  - `DEJAVNOAST` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število)
+  - 'DEJAVNOST ŠTEVILKA' - vrsta zdravstvene storitve, katero ponuja podjetje
+  - 'VELIKOST SUBJEKTA' - velikost podajetja glede na število zaposlenih 
+  - 'ŠTEVILO ZAPOSLENIH' - število zaposlenih v zdravstvenem podjetju
+  
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
+2. "stevilski_podatki" - podatki o poslovanju zdravstvenih podjetji v €
+  - `NAZIV` - ime zdravstvenega podjetja,
+  - `Prihodki 2018` - letni prihodek v letu 2018,
+  - `Prihodki 2017` - letni prihodek v letu 2017,
+  - `Prihodki 2016` - letni prihodek v letu 2016,
+  - `Prihodki 2015` - letni prihodek v letu 2015,
+  - `Dobiček 2018` - letni dobiček v letu 2018,
+  - `Dobiček 2017` - letni dobiček v letu 2017,
+  - `Dobiček 2016` - letni dobiček v letu 2016,
+  - `Dobiček 2015` - letni dobiček v letu 2015,,
+  - `Osnovna sredstva 2018` - sredstva prejeta v letu 2018,
+  - `Osnovna sredstva 2017` - sredstva prejeta v letu 2017,
+  - `Osnovna sredstva 2016` - sredstva prejeta v letu 2016,
+  - `Osnovna sredstva 2015` - sredstva prejeta v letu 2015,
+  - 'Prejemki iz javnih sredstev 2018' - količina prejetih sredstev iz javnih skladov v 2018,
+  - 'Prejemki iz javnih sredstev 2017' - količina prejetih sredstev iz javnih skladov v 2017,
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
 
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x=naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
 
-***
+
 
 # Analiza in vizualizacija podatkov
 
