@@ -6,9 +6,9 @@
 #   https://github.com/jaanos/APPR-docker
 # Ne vključuj v svoj program!
 
-#install.packages(c(
-#    "expm",
-#    "formatR",
-#    "numDeriv",
-#    "rootSolve"
-#))
+install.packages(c(
+    "expm",
+    "formatR",
+    "numDeriv",
+   "rootSolve"
+))
