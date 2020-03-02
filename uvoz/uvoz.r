@@ -1,55 +1,43 @@
 # 2. faza: Uvoz podatkov
+source("lib/libraries.r", encoding="UTF-8")
 
-sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+moji_podatki <- read_delim("podatki/goli_podatki.csv", 
+                           ";", escape_double = FALSE, trim_ws = TRUE, locale=locale(encoding="windows-1250"), 
+                           na=c("#VALUE!","/", "0",""))
 
-# Funkcija, ki uvozi občine iz Wikipedije
-uvozi.obcine <- function() {
-  link <- "http://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji"
-  stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//table[@class='wikitable sortable']") %>%
-    .[[1]] %>% html_table(dec=",")
-  for (i in 1:ncol(tabela)) {
-    if (is.character(tabela[[i]])) {
-      Encoding(tabela[[i]]) <- "UTF-8"
-    }
-  }
-  colnames(tabela) <- c("obcina", "povrsina", "prebivalci", "gostota", "naselja",
-                        "ustanovitev", "pokrajina", "regija", "odcepitev")
-  tabela$obcina <- gsub("Slovenskih", "Slov.", tabela$obcina)
-  tabela$obcina[tabela$obcina == "Kanal ob Soči"] <- "Kanal"
-  tabela$obcina[tabela$obcina == "Loški potok"] <- "Loški Potok"
-  for (col in c("povrsina", "prebivalci", "gostota", "naselja", "ustanovitev")) {
-    if (is.character(tabela[[col]])) {
-      tabela[[col]] <- parse_number(tabela[[col]], na="-", locale=sl)
-    }
-  }
-  for (col in c("obcina", "pokrajina", "regija")) {
-    tabela[[col]] <- factor(tabela[[col]])
-  }
-  return(tabela)
-}
+#OBDELAVA PODATKOV
+moji_podatki$NAZIV <- gsub("\\?", "č", moji_podatki$NAZIV,ignore.case = FALSE)
+moji_podatki$NASLOV <- gsub("\\?", "č", moji_podatki$NASLOV,ignore.case = FALSE)
+moji_podatki$KRAJ <- gsub("\\?", "č", moji_podatki$KRAJ,ignore.case = FALSE)
+moji_podatki$DEJAVNOST <- gsub("\\?", "č", moji_podatki$DEJAVNOST,ignore.case = FALSE)
+moji_podatki$VELIKOST_SUBJEKTA <- gsub("\\?", "č", moji_podatki$VELIKOST_SUBJEKTA,ignore.case = FALSE)
 
-# Funkcija, ki uvozi podatke iz datoteke druzine.csv
-uvozi.druzine <- function(obcine) {
-  data <- read_csv2("podatki/druzine.csv", col_names=c("obcina", 1:4),
-                    locale=locale(encoding="CP1250"))
-  data$obcina <- data$obcina %>% strapplyc("^([^/]*)") %>% unlist() %>%
-    strapplyc("([^ ]+)") %>% sapply(paste, collapse=" ") %>% unlist()
-  data$obcina[data$obcina == "Sveti Jurij"] <- "Sveti Jurij ob Ščavnici"
-  data <- data %>% gather(`1`:`4`, key="velikost.druzine", value="stevilo.druzin")
-  data$velikost.druzine <- parse_number(data$velikost.druzine)
-  data$obcina <- parse_factor(data$obcina, levels=obcine)
-  return(data)
-}
+osnovni_podatki <- moji_podatki[c(1:632),c(4,8,10,11,13,14)]
+stevilski_podatki <- moji_podatki[c(1:632),c(4,8,11,22:29,32,34,36,38,40,41)]
 
-# Zapišimo podatke v razpredelnico obcine
-obcine <- uvozi.obcine()
+colnames(osnovni_podatki)[2:6] <- c("REGIJA","DEJAVNOST","DEJAVNOST ŠTEVILKA","VELIKOST SUBJEKTA","ŠTEVILO ZAPOSLENIH")
+colnames(stevilski_podatki)[6:7] <- c("Profit 2018","Profit 2017")
+colnames(stevilski_podatki)[14:15] <- c("Profit 2016","Profit 2015")
 
-# Zapišimo podatke v razpredelnico druzine.
-druzine <- uvozi.druzine(levels(obcine$obcina))
+#LEGENDA REGIJ
+legenda_regij <- matrix(c("Ljubljana","Maribor","Celje","Kranj","Nova Gorica", "Koper", "Novo Mesto", "Murska Sobota",
+                          1,2,3,4,5,6,7,8),ncol=2) 
+colnames(legenda_regij) <- c('KRAJ', 'ŠTEVILKA')
+legenda_regij <- tbl_df(legenda_regij)
 
-# Če bi imeli več funkcij za uvoz in nekaterih npr. še ne bi
-# potrebovali v 3. fazi, bi bilo smiselno funkcije dati v svojo
-# datoteko, tukaj pa bi klicali tiste, ki jih potrebujemo v
-# 2. fazi. Seveda bi morali ustrezno datoteko uvoziti v prihodnjih
-# fazah.
+#LEGENDA DEJAVNOSTI
+legenda_dejavnosti <- osnovni_podatki[c("DEJAVNOST", "DEJAVNOST ŠTEVILKA")] 
+legenda_dejavnosti <- distinct(legenda_dejavnosti)
+#legenda_dejavnosti <- legenda_dejavnosti[arrange(legenda_dejavnosti$`DEJAVNOST ŠTEVILKA`)]
+
+
+prihodki_regija <- stevilski_podatki[c(1:632),c(2,4,5,12,13)]
+NOVA <-prihodki_regija %>%
+  group_by(regija) %>%
+  summarize(prihodek2018 = sum(`Prihodki 2018`, na.rm = TRUE),
+            prihdek2017 = sum(`Prihodki 2017`, na.rm = TRUE))
+            
+#noče mi sešrtevati po več stolpcih hkrati            
+            
+
+
