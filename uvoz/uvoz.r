@@ -37,7 +37,7 @@ NOVA <-prihodki_regija %>%
   summarize(prihodek2018 = sum(`Prihodki 2018`, na.rm = TRUE),
             prihdek2017 = sum(`Prihodki 2017`, na.rm = TRUE))
             
-#noče mi seštevati po več stolpcih hkrati            
+#noče mi seštevati po več stolpcih hkrati.            
             
 
 
