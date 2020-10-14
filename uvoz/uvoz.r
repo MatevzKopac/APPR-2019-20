@@ -16,8 +16,8 @@ osnovni_podatki <- moji_podatki[c(1:632),c(4,8,10,11,13,14)]
 stevilski_podatki <- moji_podatki[c(1:632),c(4,8,11,22:29,32,34,36,38,40,41)]
 
 colnames(osnovni_podatki)[2:6] <- c("REGIJA","DEJAVNOST","DEJAVNOST ŠTEVILKA","VELIKOST SUBJEKTA","ŠTEVILO ZAPOSLENIH")
-colnames(stevilski_podatki)[6:7] <- c("Profit 2018","Profit 2017")
-colnames(stevilski_podatki)[14:15] <- c("Profit 2016","Profit 2015")
+colnames(stevilski_podatki)[6:7] <- c("Profit_2018","Profit_2017")
+colnames(stevilski_podatki)[14:15] <- c("Profit_2016","Profit_2015")
 
 #LEGENDA REGIJ
 legenda_regij <- matrix(c("Ljubljana","Maribor","Celje","Kranj","Nova Gorica", "Koper", "Novo mesto", "Murska Sobota",
@@ -28,18 +28,36 @@ legenda_regij <- tbl_df(legenda_regij)
 #LEGENDA DEJAVNOSTI
 legenda_dejavnosti <- osnovni_podatki[c("DEJAVNOST", "DEJAVNOST ŠTEVILKA")] 
 legenda_dejavnosti <- distinct(legenda_dejavnosti)
-legenda_dejavnosti <- legenda_dejavnosti[arrange(legenda_dejavnosti$`DEJAVNOST ŠTEVILKA`)]
+#legenda_dejavnosti <- legenda_dejavnosti[arrange(legenda_dejavnosti$`DEJAVNOST ŠTEVILKA`)]
 
 
 prihodki_regija <- stevilski_podatki[c(1:632),c(2,4,5,12,13)]
-NOVA <-prihodki_regija %>%
-  group_by(regija) %>%
-  summarize(prihodek2018 = sum(`Prihodki 2018`, na.rm = TRUE),
-            prihdek2017 = sum(`Prihodki 2017`, na.rm = TRUE))
+#NOVA <-prihodki_regija %>%
+  #group_by(regija) %>%
+  #summarise(prihodek2018 = sum(`Prihodki 2018`, na.rm = TRUE),
+            #prihdek2017 = sum(`Prihodki 2017`, na.rm = TRUE))
             
           
 
 #noče mi seštevati po več stolpcih hkrati.            
+#prihodki_regija$`Prihodki_2017` <- as.numeric(prihodki_regija$`Prihodki_2017`)
 
+prihodki_regija <- gather(prihodki_regija, "leto", "Dohodek", 2:5)
+prihodki_regija$`Dohodek` <- as.numeric(prihodki_regija$`Dohodek`)
+prihodki_regija$leto <- gsub("Prihodki", "", prihodki_regija$leto)
+prihodki_regija[is.na(prihodki_regija)] <- 0
 
+# graf prihodki glede na regijo je vredu 
+
+dobicek_regija <- stevilski_podatki %>% select(2, 6, 7, 14, 15)
+#dobicek_regija$`Profit_2018` <- as.numeric(dobicek_regija$`Profit_2018`)
+#dobicek_regija$`Profit_2017` <- as.numeric(dobicek_regija$`Profit_2017`)
+dobicek_regija <- gather(dobicek_regija, "leto", "Profit", 2:5)
+dobicek_regija$Profit <- gsub(",.*", "", dobicek_regija$Profit)
+dobicek_regija$Profit <- gsub("\\.", "", dobicek_regija$Profit)
+dobicek_regija$`Profit` <- parse_integer(dobicek_regija$`Profit`)
+dobicek_regija$leto <- gsub("Profit_", "", dobicek_regija$leto)
+dobicek_regija[is.na(dobicek_regija)] <- 0
+
+# graf dobicek glede na regijo je vredu 
 
