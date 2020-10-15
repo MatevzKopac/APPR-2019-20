@@ -22,5 +22,8 @@ tabela2 <- zapolseni_regija_dejavnost %>% rename("Zaposleni" = "ŠTEVILO ZAPOSLE
   group_by(DEJAVNOST) %>% summarise(Zaposleni = sum(Zaposleni, na.rm = TRUE)) 
 
 
-graf1 <- ggplot(data = tabela1, aes(x=REGIJA, y=Zaposleni) + 
-  geom_bar(stat = "identity", width = 0.5)) 
+graf1 <- ggplot(data = tabela1, aes(x=REGIJA)) + geom_line(y=tabela1$Zaposleni)
+
+
+#+ 
+#  geom_bar(stat = "identity", data = tabela1, aes(x=REGIJA, y=Zaposleni), width = 0.5)
