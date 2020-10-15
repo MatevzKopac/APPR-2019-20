@@ -43,7 +43,9 @@ prihodki_regija <- stevilski_podatki[c(1:632),c(2,4,5,12,13)]
 #prihodki_regija$`Prihodki_2017` <- as.numeric(prihodki_regija$`Prihodki_2017`)
 
 prihodki_regija <- gather(prihodki_regija, "leto", "Dohodek", 2:5)
-prihodki_regija$`Dohodek` <- as.numeric(prihodki_regija$`Dohodek`)
+prihodki_regija$Dohodek <- gsub(",.*", "", prihodki_regija$Dohodek)
+prihodki_regija$Dohodek <- gsub("\\.", "", prihodki_regija$Dohodek)
+prihodki_regija$`Dohodek` <- parse_integer(prihodki_regija$`Dohodek`)
 prihodki_regija$leto <- gsub("Prihodki", "", prihodki_regija$leto)
 prihodki_regija[is.na(prihodki_regija)] <- 0
 
@@ -60,4 +62,34 @@ dobicek_regija$leto <- gsub("Profit_", "", dobicek_regija$leto)
 dobicek_regija[is.na(dobicek_regija)] <- 0
 
 # graf dobicek glede na regijo je vredu 
+
+
+zapolseni_regija_dejavnost <- osnovni_podatki %>% select(2, 3, 6)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
