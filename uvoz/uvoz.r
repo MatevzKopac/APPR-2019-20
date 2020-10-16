@@ -22,7 +22,8 @@ colnames(stevilski_podatki)[14:15] <- c("Profit_2016","Profit_2015")
 #LEGENDA REGIJ
 legenda_regij <- matrix(c("Ljubljana","Maribor","Celje","Kranj","Nova Gorica", "Koper", "Novo mesto", "Murska Sobota",
                           1,2,3,4,5,6,8,9),ncol=2) 
-colnames(legenda_regij) <- c('KRAJ', 'ŠTEVILKA')
+colnames(legenda_regij) <- c('KRAJ', 'REGIJA')
+legenda_regij$`REGIJA` <- parse_integer(legenda_regij$`REGIJA`)
 legenda_regij <- tbl_df(legenda_regij)
 
 #LEGENDA DEJAVNOSTI
@@ -64,7 +65,7 @@ dobicek_regija[is.na(dobicek_regija)] <- 0
 # graf dobicek glede na regijo je vredu 
 
 
-zapolseni_regija_dejavnost <- osnovni_podatki %>% select(2, 3, 6)
+zapolseni_regija_dejavnost <- osnovni_podatki %>% select(2, 3, 6) 
 
 
 
