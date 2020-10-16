@@ -23,8 +23,9 @@ colnames(stevilski_podatki)[14:15] <- c("Profit_2016","Profit_2015")
 legenda_regij <- matrix(c("Ljubljana","Maribor","Celje","Kranj","Nova Gorica", "Koper", "Novo mesto", "Murska Sobota",
                           1,2,3,4,5,6,8,9),ncol=2) 
 colnames(legenda_regij) <- c('KRAJ', 'REGIJA')
-legenda_regij$`REGIJA` <- parse_integer(legenda_regij$`REGIJA`)
+
 legenda_regij <- tbl_df(legenda_regij)
+legenda_regij$`REGIJA` <- parse_integer(legenda_regij$`REGIJA`)
 
 #LEGENDA DEJAVNOSTI
 legenda_dejavnosti <- osnovni_podatki[c("DEJAVNOST", "DEJAVNOST ŠTEVILKA")] 

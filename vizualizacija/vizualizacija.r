@@ -22,10 +22,9 @@ tabela1 <- inner_join(tabela1, legenda_regij, by = "REGIJA") %>% select(2,3)
 tabela2 <- zapolseni_regija_dejavnost %>% rename("Zaposleni" = "ŠTEVILO ZAPOSLENIH") %>% mutate(Zaposleni = as.numeric(Zaposleni)) %>%
   group_by(DEJAVNOST) %>% summarise(Zaposleni = sum(Zaposleni, na.rm = TRUE)) 
 
-
-graf1 <- ggplot(tabela1, aes(x=KRAJ, y=Zaposleni, group = 1)) + geom_line()
-
-
-#+ 
-#  geom_bar(stat = "identity", data = tabela1, aes(x=REGIJA, y=Zaposleni), width = 0.5)
+graf1 <- ggplot(tabela1, aes(x=KRAJ, y=Zaposleni, group = 1)) +
+  geom_bar(stat = "identity", aes(x=KRAJ, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
+  scale_x_discrete(labels = function(x) str_wrap(x,width = 15))  + 
+  ggtitle("Zaposleni glede na regionalno enoto") 
 graf1
+
