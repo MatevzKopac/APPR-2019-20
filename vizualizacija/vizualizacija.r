@@ -24,7 +24,31 @@ tabela2 <- zapolseni_regija_dejavnost %>% rename("Zaposleni" = "ŠTEVILO ZAPOSLE
 
 graf1 <- ggplot(tabela1, aes(x=KRAJ, y=Zaposleni, group = 1)) +
   geom_bar(stat = "identity", aes(x=KRAJ, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
-  scale_x_discrete(labels = function(x) str_wrap(x,width = 15))  + 
+  scale_x_discrete(labels = function(x) str_wrap(x,width = 15))  +
   ggtitle("Zaposleni glede na regionalno enoto") 
+#geombar za stil, kako tortica
 graf1
+
+graf2 <- ggplot(tabela2, aes(x=DEJAVNOST, y=Zaposleni, group = 1)) +
+  geom_bar(stat = "identity", aes(x=DEJAVNOST, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
+  scale_x_discrete(labels = function(x) str_wrap(x,width = 25))  + 
+  ggtitle("Zaposleni glede na regionalno enoto")
+graf2
+
+
+colnames(dobicek_regija)[1] <- c('REGIJA')
+dobicek_regija <- inner_join(dobicek_regija, legenda_regij, by = "REGIJA")
+graf3 <- ggplot(dobicek_regija, aes(x = KRAJ)) + geom_bar(stat = "identity", aes(y = Profit, fill = leto), position = position_dodge()) +
+  theme_bw() + coord_flip() 
+graf3
+#čudno pri 2016, gre v negativno in pozitivno 
+
+
+colnames(prihodki_regija)[1] <- c('REGIJA')
+prihodki_regija <- inner_join(prihodki_regija, legenda_regij, by = "REGIJA")
+graf4 <- ggplot(prihodki_regija, aes(x = KRAJ)) + geom_bar(stat = "identity", aes(y = Dohodek, fill = leto), position = position_dodge()) +
+  theme_bw() + coord_flip()
+graf4
+
+
 
