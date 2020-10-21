@@ -26,13 +26,13 @@ graf1 <- ggplot(tabela1, aes(x=KRAJ, y=Zaposleni, group = 1)) +
   geom_bar(stat = "identity", aes(x=KRAJ, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
   scale_x_discrete(labels = function(x) str_wrap(x,width = 15))  +
   ggtitle("Zaposleni glede na regionalno enoto") 
-#geombar za stil, kako tortica
+#geom_bar za stil, kako tortica
 graf1
 
 graf2 <- ggplot(tabela2, aes(x=DEJAVNOST, y=Zaposleni, group = 1)) +
   geom_bar(stat = "identity", aes(x=DEJAVNOST, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
   scale_x_discrete(labels = function(x) str_wrap(x,width = 25))  + 
-  ggtitle("Zaposleni glede na regionalno enoto")
+  ggtitle("Zaposleni glede na dejavnost")
 graf2
 
 
