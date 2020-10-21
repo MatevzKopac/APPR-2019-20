@@ -22,26 +22,30 @@ tabela1 <- inner_join(tabela1, legenda_regij, by = "REGIJA") %>% select(2,3)
 tabela2 <- zapolseni_regija_dejavnost %>% rename("Zaposleni" = "ŠTEVILO ZAPOSLENIH") %>% mutate(Zaposleni = as.numeric(Zaposleni)) %>%
   group_by(DEJAVNOST) %>% summarise(Zaposleni = sum(Zaposleni, na.rm = TRUE)) 
 
-graf1 <- ggplot(tabela1, aes(x=KRAJ, y=Zaposleni, group = 1)) +
-  geom_bar(stat = "identity", aes(x=KRAJ, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
-  scale_x_discrete(labels = function(x) str_wrap(x,width = 15))  +
-  ggtitle("Zaposleni glede na regionalno enoto") 
-#geombar za stil, kako tortica
+
+graf1 <- ggplot(tabela1, aes(x="", y=Zaposleni, fill=KRAJ)) +
+  geom_col(width=1) + coord_polar(theta="y") +
+  theme_bw() + xlab("") +
+  scale_fill_discrete(labels=function(x) str_wrap(x, width=15)) +
+  ggtitle("Zaposleni glede na regijo")
 graf1
 
-graf2 <- ggplot(tabela2, aes(x=DEJAVNOST, y=Zaposleni, group = 1)) +
-  geom_bar(stat = "identity", aes(x=DEJAVNOST, y=Zaposleni, group = 1), width = 0.5) + theme_bw() + coord_flip() +
-  scale_x_discrete(labels = function(x) str_wrap(x,width = 25))  + 
-  ggtitle("Zaposleni glede na regionalno enoto")
+
+graf2 <- ggplot(tabela2, aes(x="", y=Zaposleni, fill=DEJAVNOST)) +
+  geom_col(width=1) + coord_polar(theta="y") +
+  theme_bw() + xlab("") +
+  scale_fill_discrete(labels=function(x) str_wrap(x, width=15)) +
+  ggtitle("Zaposleni glede na dejavnost")
 graf2
 
 
 colnames(dobicek_regija)[1] <- c('REGIJA')
 dobicek_regija <- inner_join(dobicek_regija, legenda_regij, by = "REGIJA")
-graf3 <- ggplot(dobicek_regija, aes(x = KRAJ)) + geom_bar(stat = "identity", aes(y = Profit, fill = leto), position = position_dodge()) +
-  theme_bw() + coord_flip() 
+graf3 <- ggplot(dobicek_regija %>% group_by(leto, KRAJ) %>% summarise(Profit=sum(Profit)),
+                aes(x=parse_number(leto), y=Profit / 1e6, color=KRAJ)) + geom_line() +
+  theme_bw() + ylab("Profit v milijonih €")
 graf3
-#čudno pri 2016, gre v negativno in pozitivno 
+
 
 
 colnames(prihodki_regija)[1] <- c('REGIJA')
@@ -100,13 +104,13 @@ graf12
 Slovenija <- uvozi.zemljevid("http://biogeo.ucdavis.edu/data/gadm2.8/shp/SVN_adm_shp.zip", "SVN_adm1", encoding="windows-1250") %>% fortify() 
 colnames(Slovenija)[12] <- 'REGIJA'
 Slovenija$REGIJA <- gsub('Gorenjska', 'Kranj', Slovenija$REGIJA)
-Slovenija$REGIJA <- gsub('GoriĹˇka', 'Nova Gorica', Slovenija$REGIJA)
+Slovenija$REGIJA <- gsub('GoriÅ¡ka', 'Nova Gorica', Slovenija$REGIJA)
 Slovenija$REGIJA <- gsub('Spodnjeposavska', 'Novo mesto', Slovenija$REGIJA)
 Slovenija$REGIJA <- gsub('Zasavska', 'Ljubljana', Slovenija$REGIJA) 
 Slovenija$REGIJA <- gsub('Jugovzhodna Slovenija', 'Novo mesto', Slovenija$REGIJA)
-Slovenija$REGIJA <- gsub('KoroĹˇka', 'Maribor', Slovenija$REGIJA) 
-Slovenija$REGIJA <- gsub('Notranjsko-kraĹˇka', 'Koper', Slovenija$REGIJA)
-Slovenija$REGIJA <- gsub('Obalno-kraĹˇka', 'Koper', Slovenija$REGIJA) 
+Slovenija$REGIJA <- gsub('KoroÅ¡ka', 'Maribor', Slovenija$REGIJA) 
+Slovenija$REGIJA <- gsub('Notranjsko-kraÅ¡ka', 'Koper', Slovenija$REGIJA)
+Slovenija$REGIJA <- gsub('Obalno-kraÅ¡ka', 'Koper', Slovenija$REGIJA) 
 Slovenija$REGIJA <- gsub('Osrednjeslovenska', 'Ljubljana', Slovenija$REGIJA)
 Slovenija$REGIJA <- gsub('Podravska', 'Maribor', Slovenija$REGIJA)
 Slovenija$REGIJA <- gsub('Pomurska', 'Murska Sobota', Slovenija$REGIJA)
@@ -116,17 +120,27 @@ Slovenija$REGIJA <- gsub('Savinjska', 'Celje', Slovenija$REGIJA)
 colnames(tabela1)[2] <- 'REGIJA'
 Slovenija1 <- right_join(tabela1, Slovenija, by = "REGIJA")
 
-Zemljevid <- ggplot() +
+Zemljevid1 <- ggplot() +
   geom_polygon(data = Slovenija1, aes(x = long, y = lat, group = group, fill = Zaposleni))+
   geom_path(data = Slovenija1, aes(x = long,y = lat, group = group),color = "white", size = 0.1) +
   xlab("") + ylab("") + ggtitle('Zaposleni v regiji') + 
   theme(axis.title=element_blank(), axis.text=element_blank(), axis.ticks=element_blank(), panel.background = element_blank()) +
   scale_fill_viridis(option = "viridis", direction = -1) + 
   coord_fixed()
-Zemljevid
+Zemljevid1
 
 
+dobicek_regija1 <- dobicek_regija %>% group_by(REGIJA) %>% summarise(Profit=sum(Profit)/ 1e6)
+Slovenija2 <- right_join(dobicek_regija1, Slovenija, by = "REGIJA")
 
+Zemljevid2 <- ggplot() +
+  geom_polygon(data = Slovenija2, aes(x = long, y = lat, group = group, fill = Profit))+
+  geom_path(data = Slovenija2, aes(x = long,y = lat, group = group),color = "white", size = 0.1) +
+  xlab("") + ylab("") + ggtitle('Profit v milijonih evrov po regijah') + 
+  theme(axis.title=element_blank(), axis.text=element_blank(), axis.ticks=element_blank(), panel.background = element_blank()) +
+  scale_fill_viridis(option = "viridis", direction = -1) + 
+  coord_fixed()
+Zemljevid2
 
 
 

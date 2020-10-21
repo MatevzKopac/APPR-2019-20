@@ -1,11 +1,16 @@
 # 4. faza: Analiza podatkov
 
-podatki <- obcine %>% transmute(obcina, povrsina, gostota,
-                                gostota.naselij=naselja/povrsina) %>%
-  left_join(povprecja, by="obcina")
-row.names(podatki) <- podatki$obcina
-podatki$obcina <- NULL
+#dobiček v miljonih evrov
 
-# Število skupin
-n <- 5
-skupine <- hclust(dist(scale(podatki))) %>% cutree(n)
+dobicek_regija
+dobicek2 <- dobicek_regija %>% group_by(leto) %>% summarise(Profit=sum(Profit)/ 1e6)
+dobicek2$leto <- parse_integer(dobicek2$leto)
+
+
+graf_regresija1 <- ggplot(dobicek2, aes(x=leto, y=Profit)) + geom_line() + 
+  geom_smooth(method='lm', formula=y ~ poly(x,2,raw=TRUE), fullrange=TRUE, color='green') +
+  scale_x_continuous('leto', limits = c(2015,2025))+
+  ylab('Dobički v milijonih evrov')+
+  ggtitle('Napoved dobičkov v zdravstvu do leta 2025')
+graf_regresija1
+
