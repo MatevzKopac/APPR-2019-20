@@ -68,7 +68,26 @@ dobicek_regija[is.na(dobicek_regija)] <- 0
 
 zapolseni_regija_dejavnost <- osnovni_podatki %>% select(2, 3, 6) 
 
+#tabela prihodkov dobičkov in zaposlenih
+prihodki_zaposleni <- inner_join(osnovni_podatki, stevilski_podatki, by = "NAZIV") %>% select(3, 9:10, 17:18, 6)
+prihodki_zaposleni <- gather(prihodki_zaposleni, "leto", "Dohodek", 2:5)
+prihodki_zaposleni$Dohodek <- gsub(",.*", "", prihodki_zaposleni$Dohodek)
+prihodki_zaposleni$Dohodek <- gsub("\\.", "", prihodki_zaposleni$Dohodek)
+prihodki_zaposleni$`Dohodek` <- parse_integer(prihodki_zaposleni$`Dohodek`)
+prihodki_zaposleni$leto <- gsub("Prihodki", "", prihodki_zaposleni$leto)
+prihodki_zaposleni[is.na(prihodki_zaposleni)] <- 0
 
+do10 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 10)
+
+od10do30 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30, prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` > 10)
+
+od30do100 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 100, prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` > 30)
+
+nad100 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` > 100)
+
+
+
+dobicek_zaposleni <- inner_join(osnovni_podatki, stevilski_podatki, by = "NAZIV") %>% select(3, 11:12, 19:20, 6)
 
 
 
