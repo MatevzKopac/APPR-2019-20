@@ -19,10 +19,6 @@ runtime: shiny
 source("lib/libraries.r", encoding="UTF-8")
 ```
 
-```{r rstudio, echo=FALSE, results='asis'}
-# Izris povezave do RStudia na Binderju
-source("lib/rstudio.r", encoding="UTF-8")
-```
 
 # Izbira teme
 
@@ -33,10 +29,10 @@ Pregled podatkov bo temeljil na lokaciji zdravstvenega izvajalca, vrsti izvajane
 # Obdelava, uvoz in čiščenje podatkov
 
 ```{r uvoz, echo=FALSE, message=FALSE}
-source("uvoz/uvoz.r", encoding="UTF-8")
+source("uvoz/uvoz.r", encoding="UTF-8",echo=FALSE)
 ```
 
-Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem pridobil iz excelovega dokmenta. V njem je veliko podatkov, katerih v analizi nisem uporabil, iz Ajpesa in portala Erar pa sem pridobil še nekaj številskih podatkov s pomočjo scraperja napisanega v pythonu. Tabelo sem po uvozu očistil vseh za analizo ne potrebnih podatkov in jih ločil n dve razpredelnici v obliki "tidy data". Poleg dveh večjih rapredelnic sem naredil še dve manjši, ki služita zgolj kot legenda k podatkom.
+Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem pridobil iz excelovega dokumenta. V njem je veliko podatkov, katerih v analizi nisem uporabil, iz Ajpesa in portala Erar pa sem pridobil še nekaj številskih podatkov s pomočjo scraperja napisanega v pythonu. Tabelo sem po uvozu očistil vseh za analizo ne potrebnih podatkov in jih ločil na dve razpredelnici v obliki "tidy data". Poleg dveh večjih razpredelnic sem naredil še dve manjši, ki služita zgolj kot legenda k podatkom.
 
 
 1. "osnovni_podatki"
@@ -73,40 +69,163 @@ Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem 
 # Analiza in vizualizacija podatkov
 
 ```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+#uvoz grafov
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-ggplot() + geom_polygon(data=left_join(zemljevid, povprecja, by=c("OB_UIME"="obcina")),
-                        aes(x=long, y=lat, group=group, fill=povprecje)) +
-  ggtitle("Povprečno število otrok v družini") + xlab("") + ylab("") +
-  guides(fill=guide_colorbar(title="Povprečje"))
+#graf1- zaposleni glede na regijo xx 
+#graf2- zaposleni glede na dejavnost xx 
+#graf3- profit/leto xx
+#graf4-dohod3ek/kraj xx
+#graf5- dohodek/dejavnost do 10 
+#graf6- dohodek/dejavnost od 10 do 30 
+#graf7-dohodek/dejavnost od 30 do 100
+#graf8-dohodek/dejavnost več kot 100 
+#graf9- dohodek/leto do 10 
+#graf10- dohodek/leto od 10 do 30 
+#graf11-dohodek/leto od 30 do 100
+#graf12-dohodek/leto več kot 100 
+
+Prihodke zadnjih štirih let sem razporedil glede na lokacijo zdravstvene storitve in dejavnost, ki jo opravlja. Glede na poštne številke sem dobil 8 glavnih skupin: 
+•	LJUBLJANA
+•	MARIBOR
+•	CELJE
+•	KRANJ 
+•	NOVA GORICA
+•	KOPER
+•	NOVO MESTO 
+•	MURSKA SOBOTA
+
+Spodnji graf prikazuje prihodke glede na posamezno regijo. Najvišje prihodke je akumulirala ljubljanska regija, sledil ji je Maribor in Celje nato Kranj. Vzorec je približno enak skozi vsa leta. 
+
+```{r Prihodki, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf4)
+
+```
+V spodnjem grafu so prikazani zaposleni glede na regijo, največ jih je zaposlenih v ljubljanski regiji(19746 oz. 38%). Podobno kot pri dohodkih Ljubljani z okolico sledi Maribor(21%), Celje(10%) in Kranj(7%). Najmanj ljudi je zaposlenih v Murski Soboti(2385 oz. 5%). 
+
+```{r Zaposleni_v_regiji, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf1)
+
+```
+Zaposlene sem razvrstil tudi glede na vrsto dejavnosti, ki jo opravljajo. Dejavnosti sem delil na 9 kategorij in sicer:
+1.	Alternativne oblike zdravljenja 
+2.	Bolnišnična zdravstvena dejavnost 
+3.	Dejavnost nastanitvenih ustanov za bolniško nego
+4.	Dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb
+5.	Dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb
+6.	Druge zdravstvene dejavnosti
+7.	Specialistična zunajbolnišnična zdravstvena dejavnost
+8.	Splošna zunajbolnišnična zdravstvena dejavnost
+9.	Zobozdravstvena dejavnost
+
+Pričakovano je največji ponudnik zdravstvenih storitev bolnišnična zdravstevna dejavnost, predstavljajo deset od petnajstih največjih ponudnikov zdravstvenih storitev v Sloveniji. Teh 15 ponudnikov pa ima več zaposlenih kot vsi ostali ponudniki v analizi skupaj. 
+
+V bolnišnični zdravstveni dejavnosti je zaposlena skoraj večina vseh delavcev v zasebnih zdravstvenih storitvah (24964 oz. 48,48%), sledi ji splošna zunajbolnišnična zdravstvena dejavnost in dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb. Najmanj jih je v dejavnostih alternativne oblike zdravljenja in dejavnostih nastanitvenih ustanov za bolniško nego (manj kot 1%).
+
+```{r Zaposleni_na_dejavnost, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf2)
+```
+Dobiček po posameznih letih je pomemben izkaz poslovnega izida za podjetja. Prikazan je v spodnjem grafu. 
+
+Opazim znaten skok v letu 2017, predvsem v Ljubljanski regiji. Za največji doprinos je zaslužen UKC Ljubljana, ki je imelo rekordno leto na področju profita. 
+
+```{r Dobiček, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf3)
+```
+V tem delu sem se osredotočil, kako obseg zdravstvenega podjetja vpliva na njegove dohodke in profit glede na dejavnost ter leto v časovnem obodbju med leti 2015 in 2018. V analizi sem podjetja razdelil v 4 glavne skupine glede na število zaposlenih: 
+•	Manj kot 10 zaposlenih
+•	Med 10 in 30 zaposlenih
+•	Med 30 in 100 zaposlenih 
+•	Več kot 100 zaposlenih
+
+V prvih dveh grafih so prikazani dohodki i dobiček glede na dejavnost v posameznih letih zapodjetja, ki zaposljujejo manj kot 10 ljudi. 
+Na prvem grafu pazimo, da ponudniki z manj kot 10 zaposlenimi prihdkovno prevladujejo v speicalistični zunajbolnišnični dejavnosti in zobozdravstveni dejavnosti. To dejstvo je dokaj očitno, saj se za izvajanje dotičnih dejavnosti ne potrebuje velikega obsega zdravniškega osebja. 
+
+Podobno kot prihodki, v zadnjih štirih letih narašča tudi dobiček zdravstvenih podjetji z manj kot 10 zaposlenimi. Vidimo tudi korelacijo med izstopanji med prihodki in dobičkom, saj sta tudi tukaj na prvem mestu Specialistična zunajbolnišnična zdravstvena dejavnost z 26 milijoni dobička, sledi pa ji  zobozdravstvena dejavnost z 20 milijoni dobička v letu 2018(tudi v prejšnjih letih se pojavlja podoben vzorec). Dno lestvice  dobičkonosnosti zaseda dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb, ki pa še vedno posluje z dobičkom. 
+
+Tudi ko se osredotočimo na dobiček podjetjI opazimo odstopanja pri specialistični zunajbolnišnični dejavnosti ter zobozdravstveni dejavnosti kot najbolj dobičkonosni v letu 2018, zopet pa je dejavnost z najmanj dobička na podjetje dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb. 
+Potrebno je poudariti, da dobiček opazno narašča v vseh dejavnostih .
+
+```{r Izkaz_glede_na_obseg1, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf5)
+print(graf9)
+```
+Spodnja grafa prikazujeta prihodke in dobičke za podjetja z več kot 10 in manj kot 30 zaposlenih.
+V zadnjih štirih letih lahko opazimo porast prihodkov v manjših zdravstvenih podjetjih. 
+Največ prihodkov imajo podjetja, ki opravljajo specialistične zunajbolnišnične zdravstvene dejavnosti. Prav tako ima ta dejavnost največ podjetji z med 10 in 30 zaposlenimi. 
+Tej dejavnosti sledi splošna zunajbolnišnična zdravstvena dejavnost, tako po številu podjetji kot po prihodkih. 
+
+Najmanj prihodkov ima dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb in le eno zdravstveno ustanovo za to dejavnost obsega med 10 in 30 zaposlenimi. 
+Prihodek na podjetje je največji v bolnišnični zdravstveni dejavnosti, vendar pa se velik prihodek ne prenese učinkovito na dobiček. 
+
+Sledeče dejavnosti po višini prihodka so specialistična zunajbolnišnična zdravstvena dejavnost, splošna zunajbolnišnična zdravstvena dejavnost in zobozdravstvena dejavnost. Te za razliko od bolnišnične zdravstvene dejavnosti svoj prihodek učinkovito prenesejo v dobiček.
+
+Izgube so nastale le pri bolnišnični zdravstveni dejavnosti v letu 2017 in dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb v letu 2015. V teh dejavnostih tudi dobiček ni bil nikoli visok, enako velja tudi za dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb. 
+
+Kar se tiče dobička, smo pri zdravstvenih podjetjih tega obsega opazili podobnosti s podjetji, ki imajo manj kot 10 zaposlenih. Pri dobičkih prevladata spec. Zunajbolnišnična zdravstvena dejavnost in zobozdravstvena dejavnost.
+
+```{r Izkaz_glede_na_obseg2, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf6)
+print(graf10)
 ```
 
-***
+Sledijo podjetja z med 30 in 100 zaposlenimi. Največ prihodkov imajo podjetja, ki opravljajo splošno zunajbolnišnično zdravstveno dejavnost. Tej sledi dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb.
+Najmanj prihodkov ima specialistična zunajbolnišnična zdravstvena dejavnost in le 4 zdravstvene ustanove za to dejavnost obsega med 10 in 30 zaposlenimi. 
+Prihodek na podjetje je največji v zobozdravstveni dejavnosti, ki ima 1 enoto, dobiček na podjetje pa je znatno manjši kot pri podjetjih z manjšim obsegom. Podobno opazimo tudi pri ostalih dejavnostih tega obsega. 
+ 
+Največji dobiček imata splošna zunajbolnišnična zdravstvena dejavnost in dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb. V primerjavi z manjšimi zdravstvenimi podjetji je dobiček na podjetje precej manjši. Največja razlika se opazi pri zobozdravstveni dejvanosti.
 
-# Napredna analiza podatkov
+```{r Izkaz_glede_na_obseg3, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf7)
+print(graf11)
+```
+V segmentu zdravstvenih podjetji z več kot 100 jih največ opravlja dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb, splošno zunajbolnišnično zdravstveno dejavnost ter bolnišnična zdravstvena dejavnost.
+Največje prihodke ima bolnišnična zdravstvena dejavnost, največja ponudnika teh storitev sta UKC Ljubljana in UKC Maribor.  Prihodki se v zadnjih letih večajo prav v vseh dejavnostih. 
+Največje prihodke na podjetje in bolnišnična zdravstvena dejavnost, sledijo pa ji druge zdravstvene dejavnosti. Opazimo, da so prihodki zaradi obsega zdravstvenih podjetji bistveno večji.
 
-```{r analiza, echo=FALSE, message=FALSE}
+Dobiček je največji pri bolnišnični dejavnosti vendar ni konstanten. V določenih letih so velike izgube (predvsem zaradi UKC Ljubljana in UKC Maribor). Po dobičku ji sledi dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb, ki pa je v letu 2017 vseeno poslovala z izgubo. Edine dejavnosti, ki v zadnjih štirih letnih niso imele izgub so:
+•	dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb
+•	Druge zdravstvene dejavnosti
+
+Opazimo tufi hitro znižanje dobička pri splošni zunajbolnišnični dejavnosti.
+
+
+```{r Izkaz_glede_na_obseg4, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf8)
+print(graf12)
+```
+
+
+Spodnji zemljevid prikazuje zaposlene v regijah. Največja zgostitev zaposlenih v zdravstvenih dejavnosti je v Ljubljani in Mariboru, najmanjša pa v obalnih regijah in Prekmurju.
+
+```{r zemljevid1, echo=FALSE, fig.align='center', fig.cap='Zemljevid okoljskih investicij'}
+plot(Zemljevid1)
+```
+
+Spodnji zemljevid prikazuje dobičke v regijah. Najbolj dobičkonosna regija je ljubljanska, najmanj denarja pa ustvarja okolica Gorice.
+
+```{r zemljevid2, echo=FALSE, fig.align='center', fig.cap='Zemljevid okoljskih investicij'}
+plot(Zemljevid2)
+```
+ Napredna analiza podatkov
+
+```{r analiza, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+#uvoz grafov
 source("analiza/analiza.r", encoding="UTF-8")
 ```
 
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
+Spodnji graf prikazuje napoved dobičkov v zdravstvu do leta 2025. Ocene so več kot očitno pretirane, saj kaže na možne 20 milijardne dobičke, ki seveda niso dosegljivi v obsegu slovenskega zdravstva. 
 
-```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina=names(skupine),
-                                     skupina=factor(skupine)), by="obcina")
-, aes(x=povrsina, y=naselja, color=skupina, size=prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color=guide_legend(title="Skupina"),
-         size=guide_legend(title="Prebivalci (* 1000)"))
+```{r grafi_napredni, echo=FALSE, fig.align='center', warning=FALSE}
+print(graf_regresija1)
 ```
+
+
 
 ***
 
-```{r shiny, echo=FALSE}
-shinyAppDir("shiny", options=list(width="100%", height=600))
-```
+#```{r shiny, echo=FALSE}
+#shinyAppDir("shiny", options=list(width="100%", height=600))
+#```

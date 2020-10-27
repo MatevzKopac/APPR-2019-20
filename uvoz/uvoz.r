@@ -1,9 +1,17 @@
 # 2. faza: Uvoz podatkov
 source("lib/libraries.r", encoding="UTF-8")
+moji_podatki <- read_delim("podatki/goli_podatki.csv",
+                           ";", escape_double=FALSE, trim_ws=TRUE,
+                           locale=locale(encoding="windows-1250",
+                                         decimal_mark=",", grouping_mark="."),
+                           col_types=cols(DATUM_UVOZA=col_date(format="%d.%m.%Y"),
+                                          `Osnovna sredstva 2018`=col_number()),
+                           na=c("#VALUE!", "/", "0", "", "-", "ni podatka"), # ali je 0 res manjkajoč podatek?
+                           n_max=632)
 
-moji_podatki <- read_delim("podatki/goli_podatki.csv", 
-                           ";", escape_double = FALSE, trim_ws = TRUE, locale=locale(encoding="windows-1250"), 
-                           na=c("#VALUE!","/", "0",""))
+#moji_podatki <- read_delim("podatki/goli_podatki.csv", 
+#                           ";", escape_double = FALSE, trim_ws = TRUE, locale=locale(encoding="windows-1250"), 
+#                           na=c("#VALUE!","/", "0",""))
 
 #OBDELAVA PODATKOV
 moji_podatki$NAZIV <- gsub("\\?", "č", moji_podatki$NAZIV,ignore.case = FALSE)
@@ -24,7 +32,7 @@ legenda_regij <- matrix(c("Ljubljana","Maribor","Celje","Kranj","Nova Gorica", "
                           1,2,3,4,5,6,8,9),ncol=2) 
 colnames(legenda_regij) <- c('KRAJ', 'REGIJA')
 
-legenda_regij <- tbl_df(legenda_regij)
+legenda_regij <- tibble::as_tibble(legenda_regij)
 legenda_regij$`REGIJA` <- parse_integer(legenda_regij$`REGIJA`)
 
 #LEGENDA DEJAVNOSTI
@@ -77,9 +85,9 @@ prihodki_zaposleni$`Dohodek` <- parse_integer(prihodki_zaposleni$`Dohodek`)
 prihodki_zaposleni$leto <- gsub("Prihodki", "", prihodki_zaposleni$leto)
 prihodki_zaposleni[is.na(prihodki_zaposleni)] <- 0
 
-do10 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 10)
+do10 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` < 10)
 
-od10do30 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30, prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` > 10)
+od10do30 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30, prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` >= 10)
 
 od30do100 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 100, prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` > 30)
 
@@ -88,10 +96,23 @@ nad100 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH`
 
 
 dobicek_zaposleni <- inner_join(osnovni_podatki, stevilski_podatki, by = "NAZIV") %>% select(3, 11:12, 19:20, 6)
+dobicek_zaposleni <- gather(dobicek_zaposleni, "Leto", "Profit", 2:5)
+dobicek_zaposleni$Profit <- gsub(",.*", "", dobicek_zaposleni$Profit)
+dobicek_zaposleni$Profit <- gsub("\\.", "", dobicek_zaposleni$Profit)
+dobicek_zaposleni$`Profit` <- parse_integer(dobicek_zaposleni$`Profit`)
+dobicek_zaposleni$Leto <- gsub("Profit_", "", dobicek_zaposleni$Leto)
+dobicek_zaposleni[is.na(dobicek_zaposleni)] <- 0
 
 
+Profit_do10 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` < 10)
 
+Profit_od10do30 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30, dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` >= 10)
 
+Profit_od30do100 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 100, dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 30)
+
+Profit_nad100 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 100)
+
+#
 
 
 
