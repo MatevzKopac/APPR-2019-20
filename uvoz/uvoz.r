@@ -101,6 +101,16 @@ dobicek_zaposleni$Profit <- gsub("\\.", "", dobicek_zaposleni$Profit)
 dobicek_zaposleni$`Profit` <- parse_integer(dobicek_zaposleni$`Profit`)
 dobicek_zaposleni$Leto <- gsub("Profit_", "", dobicek_zaposleni$Leto)
 dobicek_zaposleni[is.na(dobicek_zaposleni)] <- 0
+dobicek_zaposleni$DEJAVNOST <- gsub("Zobozdravstvena dejavnost", "Zobozdr. dej.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Specialistična zunajbolnišnična zdravstvena dejavnost", "Spec. zunajbol. zdr. dej.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Druge zdravstvene dejavnosti", "Dr. zdr. dej.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb", "Dej. nast. ustan. za star.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Bolnišnična zdravstvena dejavnost", "Bol. zdr. dej.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Splošna zunajbolnišnična zdravstvena dejavnost", "Spl. zunajbol. zdr.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb", "Dej. nast. ustan. za duš. priz.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Alternativne oblike zdravljenja", "Alt. obl. zdr.", dobicek_zaposleni$DEJAVNOST)
+dobicek_zaposleni$DEJAVNOST <- gsub("Dejavnost nastanitvenih ustanov za bolniško nego", "Dej. nast. ustan. za nego", dobicek_zaposleni$DEJAVNOST)
+
 
 
 Profit_do10 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` < 10)
