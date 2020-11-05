@@ -10,7 +10,7 @@
 
 # Izračunamo povprečno velikost družine
 #povprecja <- druzine %>% group_by(obcina) %>%
-  #summarise(povprecje=sum(velikost.druzine * stevilo.druzin) / sum(stevilo.druzin))
+#summarise(povprecje=sum(velikost.druzine * stevilo.druzin) / sum(stevilo.druzin))
 
 # tabele in grafi za zaposlene glede na regijo in dejavnost
 
@@ -44,7 +44,7 @@ profit_regija <- inner_join(dobicek_regija, legenda_regij, by = "REGIJA")
 graf3 <- ggplot(profit_regija %>% group_by(leto, KRAJ) %>% summarise(Profit=sum(Profit)),
                 aes(x=parse_number(leto), y=Profit / 1e6, color=KRAJ)) + geom_line() + xlab("Leto") +
   ggtitle("Dobiček v posameznih letih") + ylab("Dobiček v milijonih €") 
-  theme_bw() 
+theme_bw() 
 graf3
 
 
@@ -60,7 +60,7 @@ graf5 <- ggplot(do10, aes(x = DEJAVNOST)) + geom_bar(stat = "identity", aes(y = 
   theme_bw() + scale_x_discrete(labels = function(y) str_wrap(y,width = 1)) + theme(legend.position = "top") +
   ggtitle("Prihodki na dejavnost v podjetjih z manj kot 10 zaposlenimi v milijonih €")  + ylab("Prihodki v milijonih €") 
 graf5  
-  
+
 #Prihodki glede na zdravstveno dejavnost, kjer je zaposlenih med 10 in 30 ljudi 
 graf6 <- ggplot(od10do30, aes(x = DEJAVNOST)) + geom_bar(stat = "identity", aes(y = Dohodek / 1e6, fill = leto), position = position_dodge()) +
   theme_bw() + scale_x_discrete(labels = function(y) str_wrap(y,width = 1)) + theme(legend.position = "top")  +
@@ -78,18 +78,18 @@ graf8 <- ggplot(nad100, aes(x = DEJAVNOST)) + geom_bar(stat = "identity", aes(y 
   theme_bw() + scale_x_discrete(labels = function(y) str_wrap(y,width = 1)) + theme(legend.position = "top") +
   ggtitle("Prihodki na dejavnost v podjetjih z več kot 100 zaposlenimi v milijonih €") + ylab("Prihodki v milijonih €")
 graf8  
- 
+
 ## Profit glede na leto in regijo 
 
 profit_do10 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 10) 
 profit_do10 <- profit_do10 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
-  
+
 graf9 <- ggplot(profit_do10, aes(x = Leto, y = Profit / 1e6, group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
   theme(legend.position = "bottom") + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
   ggtitle("Dobiček po letih 2015-2018 v podjetjih z manj kot 10 zaposlenimi v milijonih €") + ylab("Dobiček v milijonih €")
 graf9 
 
- 
+
 
 profit_od10do30 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 10, dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30) 
 profit_od10do30 <- profit_od10do30 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
@@ -142,6 +142,7 @@ Zemljevid1 <- ggplot() +
 Zemljevid1
 
 #
+
 dobicek_regija1 <- dobicek_regija %>% group_by(REGIJA) %>% summarise(Profit=sum(Profit)/ 1e6)
 dobicek_regija1$REGIJA  <- legenda_regij$KRAJ
 Slovenija2 <- right_join(dobicek_regija1, Slovenija, by = "REGIJA")
