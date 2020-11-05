@@ -103,12 +103,14 @@ graf11 <- ggplot(profit_od30do100, aes(x = Leto, y = Profit / 1e6, group = DEJAV
   ggtitle("Dobiček v letih 2015-2018 v podjetjih z med 30 in 100 zaposlenimi v milijonih €") + ylab("Dobiček v milijonih €")
 graf11
 
+
 profit_nad100 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 100) 
 profit_nad100 <- profit_nad100 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
 graf12 <- ggplot(profit_nad100, aes(x = Leto, y = Profit / 1e6 , group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
   theme(legend.position = "bottom") + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
   ggtitle("Dobiček v letih 2015-2018 v podjetjih z več kot 100 zaposlenimi v milijonih v milijonih €") + ylab("Dobiček v milijonih €")
 graf12
+
 
 Slovenija <- uvozi.zemljevid("http://biogeo.ucdavis.edu/data/gadm2.8/shp/SVN_adm_shp.zip", "SVN_adm1", encoding="windows-1250") %>% fortify() 
 colnames(Slovenija)[12] <- 'REGIJA'
@@ -137,12 +139,12 @@ Zemljevid1 <- ggplot() +
   scale_fill_viridis(option = "viridis", direction = -1) + 
   coord_fixed()
 Zemljevid1
-
-#
+ 
 
 dobicek_regija1 <- dobicek_regija %>% group_by(REGIJA) %>% summarise(Profit=sum(Profit)/ 1e6)
 dobicek_regija1$REGIJA  <- legenda_regij$KRAJ
 Slovenija2 <- right_join(dobicek_regija1, Slovenija, by = "REGIJA")
+
 
 Zemljevid2 <- ggplot() +
   geom_polygon(data = Slovenija2, aes(x = long, y = lat, group = group, fill = Profit))+
