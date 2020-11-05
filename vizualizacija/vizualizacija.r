@@ -88,7 +88,6 @@ graf9 <- ggplot(profit_do10, aes(x = Leto, y = Profit / 1e6, group = DEJAVNOST))
   ggtitle("Dobiček po letih 2015-2018 v podjetjih z manj kot 10 zaposlenimi v milijonih €") + ylab("Dobiček v milijonih €")
 graf9 
 
-
 profit_od10do30 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 10, dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30) 
 profit_od10do30 <- profit_od10do30 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
 graf10 <- ggplot(profit_od10do30, aes(x = Leto, y = Profit / 1e6, group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
