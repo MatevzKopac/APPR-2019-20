@@ -36,7 +36,7 @@ Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem 
 
 
 1. "osnovni_podatki"
-`opisni podatki za zdravstvena podajetja
+`opisni podatki za zdravstvena podjetja
   - `NAZIV` - ime zdravstvenega podjetja,
   - `regija` - k regiji pripisano število, katero lahko odčitamo iz 'legenda_regij',
   - `DEJAVNOAST` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število)
@@ -54,13 +54,13 @@ Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem 
   - `Dobiček 2018` - letni dobiček v letu 2018,
   - `Dobiček 2017` - letni dobiček v letu 2017,
   - `Dobiček 2016` - letni dobiček v letu 2016,
-  - `Dobiček 2015` - letni dobiček v letu 2015,,
+  - `Dobiček 2015` - letni dobiček v letu 2015,
   - `Osnovna sredstva 2018` - sredstva prejeta v letu 2018,
   - `Osnovna sredstva 2017` - sredstva prejeta v letu 2017,
   - `Osnovna sredstva 2016` - sredstva prejeta v letu 2016,
   - `Osnovna sredstva 2015` - sredstva prejeta v letu 2015,
   - 'Prejemki iz javnih sredstev 2018' - količina prejetih sredstev iz javnih skladov v 2018,
-  - 'Prejemki iz javnih sredstev 2017' - količina prejetih sredstev iz javnih skladov v 2017,
+  - 'Prejemki iz javnih sredstev 2017' - količina prejetih sredstev iz javnih skladov v 2017
 
 
 
@@ -73,29 +73,15 @@ Uvozil sem podatke o slovenskih zdravstvenih podjetjih v obliki CSV, katero sem 
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-
-#graf1- zaposleni glede na regijo xx 
-#graf2- zaposleni glede na dejavnost xx 
-#graf3- profit/leto xx
-#graf4-dohod3ek/kraj xx
-#graf5- dohodek/dejavnost do 10 
-#graf6- dohodek/dejavnost od 10 do 30 
-#graf7-dohodek/dejavnost od 30 do 100
-#graf8-dohodek/dejavnost več kot 100 
-#graf9- dohodek/leto do 10 
-#graf10- dohodek/leto od 10 do 30 
-#graf11-dohodek/leto od 30 do 100
-#graf12-dohodek/leto več kot 100 
-
 Prihodke zadnjih štirih let sem razporedil glede na lokacijo zdravstvene storitve in dejavnost, ki jo opravlja. Glede na poštne številke sem dobil 8 glavnih skupin: 
-•	LJUBLJANA
-•	MARIBOR
-•	CELJE
-•	KRANJ 
-•	NOVA GORICA
-•	KOPER
-•	NOVO MESTO 
-•	MURSKA SOBOTA
+  - `LJUBLJANA`
+  - `MARIBOR`
+  - `KRANJ`
+  - `NOVA GORICA`
+  - `KOPER`
+  - `NOVO MESTO`
+  - `MURSKA SOBOTA`
+  - `CELJE`
 
 Spodnji graf prikazuje prihodke glede na posamezno regijo. Najvišje prihodke je akumulirala ljubljanska regija, sledil ji je Maribor in Celje nato Kranj. Vzorec je približno enak skozi vsa leta. 
 
@@ -110,15 +96,15 @@ print(graf1)
 
 ```
 Zaposlene sem razvrstil tudi glede na vrsto dejavnosti, ki jo opravljajo. Dejavnosti sem delil na 9 kategorij in sicer:
-1.	Alternativne oblike zdravljenja 
-2.	Bolnišnična zdravstvena dejavnost 
-3.	Dejavnost nastanitvenih ustanov za bolniško nego
-4.	Dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb
-5.	Dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb
-6.	Druge zdravstvene dejavnosti
-7.	Specialistična zunajbolnišnična zdravstvena dejavnost
-8.	Splošna zunajbolnišnična zdravstvena dejavnost
-9.	Zobozdravstvena dejavnost
+`Alternativne oblike zdravljenja`,
+`Bolnišnična zdravstvena dejavnost`,
+`Dejavnost nastanitvenih ustanov za bolniško nego`,
+`Dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb`,
+`Dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb`,
+`Druge zdravstvene dejavnosti`,
+`Specialistična zunajbolnišnična zdravstvena dejavnost`,
+`Splošna zunajbolnišnična zdravstvena dejavnost`,
+`Zobozdravstvena dejavnost`,
 
 Pričakovano je največji ponudnik zdravstvenih storitev bolnišnična zdravstevna dejavnost, predstavljajo deset od petnajstih največjih ponudnikov zdravstvenih storitev v Sloveniji. Teh 15 ponudnikov pa ima več zaposlenih kot vsi ostali ponudniki v analizi skupaj. 
 
@@ -135,10 +121,10 @@ Opazim znaten skok v letu 2017, predvsem v Ljubljanski regiji. Za največji dopr
 print(graf3)
 ```
 V tem delu sem se osredotočil, kako obseg zdravstvenega podjetja vpliva na njegove dohodke in profit glede na dejavnost ter leto v časovnem obodbju med leti 2015 in 2018. V analizi sem podjetja razdelil v 4 glavne skupine glede na število zaposlenih: 
-•	Manj kot 10 zaposlenih
-•	Med 10 in 30 zaposlenih
-•	Med 30 in 100 zaposlenih 
-•	Več kot 100 zaposlenih
+`Manj kot 10 zaposlenih`
+`Med 10 in 30 zaposlenih`
+`Med 30 in 100 zaposlenih`
+`Več kot 100 zaposlenih`
 
 V prvih dveh grafih so prikazani dohodki i dobiček glede na dejavnost v posameznih letih zapodjetja, ki zaposljujejo manj kot 10 ljudi. 
 Na prvem grafu pazimo, da ponudniki z manj kot 10 zaposlenimi prihdkovno prevladujejo v speicalistični zunajbolnišnični dejavnosti in zobozdravstveni dejavnosti. To dejstvo je dokaj očitno, saj se za izvajanje dotičnih dejavnosti ne potrebuje velikega obsega zdravniškega osebja. 
