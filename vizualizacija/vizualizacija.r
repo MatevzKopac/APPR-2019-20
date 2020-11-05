@@ -84,14 +84,14 @@ profit_do10 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLEN
 profit_do10 <- profit_do10 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
 
 graf9 <- ggplot(profit_do10, aes(x = Leto, y = Profit / 1e6, group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
-  theme(legend.position = "bottom") + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
+  theme(legend.position = "bottom") + theme(legend.title=element_blank()) + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
   ggtitle("Dobiček po letih 2015-2018 v podjetjih z manj kot 10 zaposlenimi v milijonih €") + ylab("Dobiček v milijonih €")
 graf9 
 
 profit_od10do30 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 10, dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 30) 
 profit_od10do30 <- profit_od10do30 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
 graf10 <- ggplot(profit_od10do30, aes(x = Leto, y = Profit / 1e6, group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
-  theme(legend.position = "bottom") + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
+  theme(legend.position = "bottom") + theme(legend.title=element_blank()) + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
   ggtitle("Dobiček v letih 2015-2018 v podjetjih z med 10 in 30 zaposlenimi v milijonih €") + ylab("Dobiček v milijonih €")
 graf10
 
@@ -99,7 +99,7 @@ graf10
 profit_od30do100 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 30, dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` <= 100) 
 profit_od30do100 <- profit_od30do100 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
 graf11 <- ggplot(profit_od30do100, aes(x = Leto, y = Profit / 1e6, group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
-  theme(legend.position = "bottom") + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
+  theme(legend.position = "bottom") + theme(legend.title=element_blank()) + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
   ggtitle("Dobiček v letih 2015-2018 v podjetjih z med 30 in 100 zaposlenimi v milijonih €") + ylab("Dobiček v milijonih €")
 graf11
 
@@ -107,7 +107,7 @@ graf11
 profit_nad100 <- dobicek_zaposleni %>% filter(dobicek_zaposleni$`ŠTEVILO ZAPOSLENIH` > 100) 
 profit_nad100 <- profit_nad100 %>% group_by(Leto, DEJAVNOST) %>% summarise(Profit = sum(`Profit`, na.rm = TRUE))
 graf12 <- ggplot(profit_nad100, aes(x = Leto, y = Profit / 1e6 , group = DEJAVNOST)) + geom_line(aes(color = DEJAVNOST)) + geom_point() + 
-  theme(legend.position = "bottom") + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
+  theme(legend.position = "bottom") + theme(legend.title=element_blank()) + guides(fill=guide_legend(nrow=6, byrow=TRUE)) +
   ggtitle("Dobiček v letih 2015-2018 v podjetjih z več kot 100 zaposlenimi v milijonih v milijonih €") + ylab("Dobiček v milijonih €")
 graf12
 
@@ -149,7 +149,7 @@ Slovenija2 <- right_join(dobicek_regija1, Slovenija, by = "REGIJA")
 Zemljevid2 <- ggplot() +
   geom_polygon(data = Slovenija2, aes(x = long, y = lat, group = group, fill = Profit))+
   geom_path(data = Slovenija2, aes(x = long,y = lat, group = group),color = "white", size = 0.1) +
-  xlab("") + ylab("") + ggtitle('Profit v milijonih evrov po regijah') + 
+  xlab("") + ylab("") + ggtitle('Dobiček v milijonih evrov po regijah') + 
   theme(axis.title=element_blank(), axis.text=element_blank(), axis.ticks=element_blank(), panel.background = element_blank()) +
   scale_fill_viridis(option = "viridis", direction = -1) + 
   coord_fixed()
