@@ -48,7 +48,6 @@ prihodki_regija <- stevilski_podatki[c(1:632),c(2,4,5,12,13)]
             #prihdek2017 = sum(`Prihodki 2017`, na.rm = TRUE))
             
           
-
 #noče mi seštevati po več stolpcih hkrati.            
 #prihodki_regija$`Prihodki_2017` <- as.numeric(prihodki_regija$`Prihodki_2017`)
 

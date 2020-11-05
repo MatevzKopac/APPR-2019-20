@@ -6,7 +6,6 @@ dobicek_regija
 dobicek2 <- dobicek_regija %>% group_by(leto) %>% summarise(Profit=sum(Profit)/ 1e6)
 dobicek2$leto <- parse_integer(dobicek2$leto)
 
-
 graf_regresija1 <- ggplot(dobicek2, aes(x=leto, y=Profit)) + geom_line() + 
   geom_smooth(method='lm', formula=y ~ poly(x,2,raw=TRUE), fullrange=TRUE, color='green') +
   scale_x_continuous('leto', limits = c(2015,2025))+

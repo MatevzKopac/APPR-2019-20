@@ -189,7 +189,7 @@ Dobiček je največji pri bolnišnični dejavnosti vendar ni konstanten. V dolo�
 •	dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb
 •	Druge zdravstvene dejavnosti
 
-Opazimo tufi hitro znižanje dobička pri splošni zunajbolnišnični dejavnosti.
+Opazimo tudi hitro znižanje dobička pri splošni zunajbolnišnični dejavnosti.
 
 
 ```{r Izkaz_glede_na_obseg4, echo=FALSE, fig.align='center', warning=FALSE}
