@@ -18,7 +18,6 @@ output:
 source("lib/libraries.r", encoding="UTF-8")
 ```
 
-
 # Izbira teme
 
 Za projekt sem si izbral analizo zdravstvenih podjetji v Sloveniji. Analizo bom pripravil na podlagi podatkov iz Ajpesa in Erar-a. Osredotočil se bom na prihodke, izkaz poslovnega izida in bilanco stanja za leta 2015-2018.  S spletne strani Erar pa bom pridobil podatke za prejemke iz javnih sredstev za leti 2017 in 2018. Podatke bom s spletnih strani izločil s pomočjo scraperja in jih uvozil v excel(iskal bom po davčni številki podjetja), iz Vzajemnine baze podatkov pa sem priodbil podatke o obsegu podjetja, vrsti zdravstvene dejavnosti in številu zaposlenih. 
