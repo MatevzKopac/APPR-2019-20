@@ -228,6 +228,5 @@ print(graf_regresija1)
 ```
 
 
-
 ***
 

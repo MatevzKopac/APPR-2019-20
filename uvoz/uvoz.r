@@ -92,8 +92,6 @@ od30do100 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLEN
 
 nad100 <- prihodki_zaposleni %>% filter(prihodki_zaposleni$`ŠTEVILO ZAPOSLENIH` > 100)
 
-
-
 dobicek_zaposleni <- inner_join(osnovni_podatki, stevilski_podatki, by = "NAZIV") %>% select(3, 11:12, 19:20, 6)
 dobicek_zaposleni <- gather(dobicek_zaposleni, "Leto", "Profit", 2:5)
 dobicek_zaposleni$Profit <- gsub(",.*", "", dobicek_zaposleni$Profit)

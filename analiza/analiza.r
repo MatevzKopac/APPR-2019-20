@@ -2,6 +2,7 @@
 
 #dobiček v miljonih evrov
 
+
 dobicek_regija
 dobicek2 <- dobicek_regija %>% group_by(leto) %>% summarise(Profit=sum(Profit)/ 1e6)
 dobicek2$leto <- parse_integer(dobicek2$leto)
