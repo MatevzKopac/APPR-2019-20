@@ -107,6 +107,18 @@ Zaposlene sem razvrstil tudi glede na vrsto dejavnosti, ki jo opravljajo. Dejavn
   - `Specialistična zunajbolnišnična zdravstvena dejavnost`,
   - `Splošna zunajbolnišnična zdravstvena dejavnost`,
   - `Zobozdravstvena dejavnost`,
+  
+V legendi grafov za dobiček sem uporabil skrajšana imena dejavnosti in sicer: 
+
+  - Zobozdravstvena dejavnost - Zobozdr. dej.
+  - Specialistična zunajbolnišnična zdravstvena dejavnost - Spec. zunajbol. zdr. dej.
+  - Druge zdravstvene dejavnosti - Dr. zdr. dej.
+  - Dejavnost nastanitvenih ustanov za oskrbo starejših in invalidnih oseb - Dej. nast. ustan. za star.
+  - Bolnišnična zdravstvena dejavnost - Bol. zdr. dej.
+  - Splošna zunajbolnišnična zdravstvena dejavnost - Spl. zunajbol. zdr.
+  - Dejavnost nastanitvenih ustanov za oskrbo duševno prizadetih, duševno obolelih in zasvojenih oseb - Dej. nast. ustan. za duš. priz.
+  - Alternativne oblike zdravljenja - Alt. obl. zdr.
+  - Dejavnost nastanitvenih ustanov za bolniško nego - Dej. nast. ustan. za nego
 
 Pričakovano je največji ponudnik zdravstvenih storitev bolnišnična zdravstevna dejavnost, predstavljajo deset od petnajstih največjih ponudnikov zdravstvenih storitev v Sloveniji. Teh 15 ponudnikov pa ima več zaposlenih kot vsi ostali ponudniki v analizi skupaj. 
 
