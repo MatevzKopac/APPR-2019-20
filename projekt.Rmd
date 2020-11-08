@@ -91,9 +91,8 @@ print(graf4)
 ```
 V spodnjem grafu so prikazani zaposleni glede na regijo, največ jih je zaposlenih v ljubljanski regiji(19746 oz. 38%). Podobno kot pri dohodkih Ljubljani z okolico sledi Maribor(21%), Celje(10%) in Kranj(7%). Najmanj ljudi je zaposlenih v Murski Soboti(2385 oz. 5%). 
 
-```{r Zaposleni_v_regiji, echo=FALSE, fig.align='center', warning=FALSE}
+```{r Zaposleni_v_regiji, echo=FALSE, fig.align='center', message=FALSE, warning=FALSE, results="hide"}
 print(graf1)
-
 ```
 Zaposlene sem razvrstil tudi glede na vrsto dejavnosti, ki jo opravljajo. Dejavnosti sem delil na 9 kategorij in sicer:
 `Alternativne oblike zdravljenja`,
@@ -117,7 +116,7 @@ Dobiček po posameznih letih je pomemben izkaz poslovnega izida za podjetja. Pri
 
 Opazim znaten skok v letu 2017, predvsem v Ljubljanski regiji. Za največji doprinos je zaslužen UKC Ljubljana, ki je imelo rekordno leto na področju profita. 
 
-```{r Dobiček, echo=FALSE, fig.align='center', warning=FALSE}
+```{r Dobicek, echo=FALSE, fig.align='center', warning=FALSE}
 print(graf3)
 ```
 V tem delu sem se osredotočil, kako obseg zdravstvenega podjetja vpliva na njegove dohodke in profit glede na dejavnost ter leto v časovnem obodbju med leti 2015 in 2018. V analizi sem podjetja razdelil v 4 glavne skupine glede na število zaposlenih: 
