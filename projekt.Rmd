@@ -130,11 +130,6 @@ V tem delu sem se osredotočil, kako obseg zdravstvenega podjetja vpliva na njeg
   - `Med 30 in 100 zaposlenih`
   - `Več kot 100 zaposlenih`
 
-
-  - `Manj kot 10 zaposlenih`
-  - `Med 10 in 30 zaposlenih`
-  - `Med 30 in 100 zaposlenih`
-  - `Več kot 100 zaposlenih`
   
 V legendi grafov za dobiček sem uporabil skrajšana imena dejavnosti in sicer: 
 
